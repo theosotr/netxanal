@@ -1,0 +1,43 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <title>Application for Network Analysis</title>
+    <script type="text/javascript" src="{{url_for('static', filename='js/functios.js') }}"></script>
+    <script type="text/javascript" src="{{url_for('static', filename='js/jquery.js') }}"></script>
+    <link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/logstyle.css') }}">
+    <script type=text/javascript>
+	$SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+</script>
+<script>
+    window.onload=initReload;
+	function initReload() {
+	    $('#fs2').hide();
+	}
+</script>
+  </head>
+  <body>
+  {% if message %}<p id=error><strong>Error:</strong> {{ message }}{% endif %}
+   <form method = "POST" action = "{{ url_for('login') }}">
+    <fieldset id = "fs1">
+    <legend>Sign in</legend>
+	Username:
+	<input type = "text" name = "username"/>
+	Password:
+	<input type = "password" name = "password"/><br><br>
+	<input type = "submit" value = "Log in"/>
+	</fieldset>
+	</form><br><br>
+	<span id = "message">If you don't have an account, create a new!</span><br>
+	<input id = "new_account" onclick = "hideElements()" type = "submit" value = "Create a new account"/>
+	  <fieldset id = "fs2">
+	  <legend>Create a new account</legend>
+	  Username:
+	  <input id = "user" type = "text" onchange = "checkIfUsernameExists()" name = "username"/><span id = 'check_username'></span><br><br>
+	  Password:
+	  <input id = "new_pass" type = "password" name = "password"/><br>
+	  Rewrite your password:
+	  <input type = "password" onchange = "checkPasswords()" name = "password2" id = "new_pass2"/><span id = "check_passwords"></span><br><br>
+	  <input type = "submit" value = "Create account" onclick = "createAccount()"/>
+	  </fieldset>
+  </body>
+</html>

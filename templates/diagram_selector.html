@@ -1,0 +1,44 @@
+<div id="diagram-selector" title="Select Measure">
+	<p class="validateTips">Select a measure to generate a frequency diagram.</p>
+	<form>
+    <fieldset>
+        {% if growing %}
+			<label for="analysis">Choose Analysis: </label>
+			<div id="analysis">
+				<input onclick="$('#dynamic-parameters').hide(); $('#distribution-parameters').show();" id="distribution-analysis" checked type="radio" name="analysis"><label for="distribution-analysis">Distribution Analysis</label>
+				<input onclick="$('#dynamic-parameters').show(); $('#distribution-parameters').hide();" id="dynamic-analysis" type="radio" name="analysis"><label for="dynamic-analysis">Dynamic Analysis</label>
+			</div>
+			<div id="dynamic-parameters">
+				<p>
+					<b>Select time by moving slider!</b><br>
+					<span class="time">Time: 50</span><br>
+				</p>
+				<div class="time-selector"></div>
+			</div>
+    	{% endif %}
+    	<div id="distribution-parameters">
+			<label for="measure">Select measure: </label>
+			<select id = "measure">
+				<option value = "betweenness">Betweeness Centrality</option>
+				<option value = "closeness">Closeness Centrality</option>
+				<option value = "eigenvector">Eigenvector Centrality</option>
+				{% if graphtype == 'Directed' %}
+					<option value = "in_degree">In-Degree Centrality</option>
+					<option value = "out_degree">Out-Degree Centrality</option>
+					<option value = "pagerank">PageRank</option>
+					{% if is_weighted %}
+						<option value = "weighted_in_degree">Weighted In-Degree</option>
+						<option value = "weighted_out_degree">Weighted Out-Degree</option>
+					{% endif %}
+				{% else %}
+					<option value = "degree">Degree Centrality</option>
+					<option value = "clustering">Clustering Coefficient</option>
+					{% if is_weighted %}
+						<option value = "weighted_degree">Weighted Degree</option>
+					{% endif %}
+				{% endif %}
+			</select><br>
+        </div>
+	</fieldset>
+	</form>
+</div>

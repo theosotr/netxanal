@@ -1,0 +1,80 @@
+@CHARSET "UTF-8";
+body{background-color: #e1e1e8}
+#menuBar {background-color: #327E04;}
+#symbol {color: red; font-size: 25px;}
+#graphInfo{height: 800px; overflow: auto;}
+table {background-color: #adadad; color: #9e0505; width: 100%;}
+caption{color: #adadad; font-size: 40px;}
+th {font-size: 20px;}
+tbody {font-size: 11px;}
+#operations {margin-top: -700px; margin-left: 60%;}
+.color-box {
+	float:left;
+	width:30px;
+	height:30px;
+	margin:5px;
+	border: 1px solid white;
+    display: inline-block;
+}
+#cliquesInfo {max-height: 600px; overflow: auto;}
+#communitiesInfo {max-height: 600px; overflow: auto;}
+#cool {
+	background: -webkit-linear-gradient(left, #88e4ec , #800080); /* For Safari 5.1 to 6.0 */
+    background: -o-linear-gradient(right, #88e4ec, #800080); /* For Opera 11.1 to 12.0 */
+    background: -moz-linear-gradient(right, #88e4ec, #800080); /* For Firefox 3.6 to 15 */
+    background: linear-gradient(to right, #88e4ec , #800080); /* Standard syntax (must be last) */
+}
+#red-blue {
+	background: -webkit-linear-gradient(left, #ff0000 , #0000ff); /* For Safari 5.1 to 6.0 */
+    background: -o-linear-gradient(right, #ff0000, #0000ff); /* For Opera 11.1 to 12.0 */
+    background: -moz-linear-gradient(right, #ff0000, #0000ff); /* For Firefox 3.6 to 15 */
+    background: linear-gradient(to right, #ff0000 , #0000ff); /* Standard syntax (must be last) */
+}
+#pink-green {
+	background: -webkit-linear-gradient(left, #a271bb , green); /* For Safari 5.1 to 6.0 */
+    background: -o-linear-gradient(right, #a271bb, green); /* For Opera 11.1 to 12.0 */
+    background: -moz-linear-gradient(right, #a271bb, green); /* For Firefox 3.6 to 15 */
+    background: linear-gradient(to right, #a271bb , green); /* Standard syntax (must be last) */
+}
+#red-grey {
+	background: -webkit-linear-gradient(left, #ff0000 , #808080); /* For Safari 5.1 to 6.0 */
+    background: -o-linear-gradient(right, #ff0000, #808080); /* For Opera 11.1 to 12.0 */
+    background: -moz-linear-gradient(right, #ff0000, #808080); /* For Firefox 3.6 to 15 */
+    background: linear-gradient(to right, #ff0000 , #808080); /* Standard syntax (must be last) */
+}
+#green-blue {
+	background: -webkit-linear-gradient(left, green , #0000ff); /* For Safari 5.1 to 6.0 */
+    background: -o-linear-gradient(right, green, #0000ff); /* For Opera 11.1 to 12.0 */
+    background: -moz-linear-gradient(right, green, #0000ff); /* For Firefox 3.6 to 15 */
+    background: linear-gradient(to right, green , #0000ff); /* Standard syntax (must be last) */
+}
+#spring {
+	background: -webkit-linear-gradient(left, #7d4898 , #ffa500); /* For Safari 5.1 to 6.0 */
+    background: -o-linear-gradient(right, #7d4898, #ffa500); /* For Opera 11.1 to 12.0 */
+    background: -moz-linear-gradient(right, #7d4898, #ffa500); /* For Firefox 3.6 to 15 */
+    background: linear-gradient(to right, #7d4898 , #ffa500); /* Standard syntax (must be last) */
+}
+#winter {
+	background: -webkit-linear-gradient(left, #0000ff , #149bdf); /* For Safari 5.1 to 6.0 */
+    background: -o-linear-gradient(right, #0000ff, #149bdf); /* For Opera 11.1 to 12.0 */
+    background: -moz-linear-gradient(right, #0000ff, #149bdf); /* For Firefox 3.6 to 15 */
+    background: linear-gradient(to right, #0000ff , #149bdf); /* Standard syntax (must be last) */
+}
+#summer {
+	background: -webkit-linear-gradient(left, #398439 , #ffde2e); /* For Safari 5.1 to 6.0 */
+    background: -o-linear-gradient(right, #398439, #ffde2e); /* For Opera 11.1 to 12.0 */
+    background: -moz-linear-gradient(right, #398439, #ffde2e); /* For Firefox 3.6 to 15 */
+    background: linear-gradient(to right, #398439 , #ffde2e); /* Standard syntax (must be last) */
+}
+#autumn {
+	background: -webkit-linear-gradient(left, orange , #ff0000); /* For Safari 5.1 to 6.0 */
+    background: -o-linear-gradient(right, orange, #ff0000); /* For Opera 11.1 to 12.0 */
+    background: -moz-linear-gradient(right, orange, #ff0000); /* For Firefox 3.6 to 15 */
+    background: linear-gradient(to right, orange , #ff0000); /* Standard syntax (must be last) */
+}
+#hot {
+	background: -webkit-linear-gradient(left, #841317 , #ffff00); /* For Safari 5.1 to 6.0 */
+    background: -o-linear-gradient(right, #841317, #ffff00); /* For Opera 11.1 to 12.0 */
+    background: -moz-linear-gradient(right, #841317, #ffff00); /* For Firefox 3.6 to 15 */
+    background: linear-gradient(to right, #841317 , #ffff00); /* Standard syntax (must be last) */
+}
