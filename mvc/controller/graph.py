@@ -1,26 +1,24 @@
-import networkx as nx
-import UserAdministrator as user_admin
+__author__ = 'theo'
+
 from random import random, randint
-import graph_info as info
-import ApplicationModel as model
-import handler as hand
-from google.appengine.ext import db
+
+import networkx as nx
 
 
 class Graphs:
     def __init__(self, parameters, layout='random', upload=True,
                  data=None):
         self.growing = False
-        if (upload):
+        if upload:
             self.uploaded = True
             self.create_graph(data, parameters['graphtype'])
         else:
             self.uploaded = False
             self.get_generated_graph(parameters)
         self.initialize_graph_characteristics()
-        if (self.is_weighted):
+        if self.is_weighted:
             self.initialize_graph_characteristics_weighted()
-        if (layout != None):
+        if layout is not None:
             self.set_node_pos(layout)
 
 
@@ -29,7 +27,7 @@ class Graphs:
     """
 
     def create_graph(self, data, graphtype):
-        if (graphtype == 'Directed'):
+        if graphtype == 'Directed':
             self.graphtype = 'Directed'
             self.graph = nx.DiGraph()
         else:
@@ -38,12 +36,12 @@ class Graphs:
         lines = str(data).split('\n')
         for line in lines:
             words = str(line).split(' ')
-            if (len(words) != 1):
-                if (not self.graph.has_node(words[0])):
+            if len(words) != 1:
+                if not self.graph.has_node(words[0]):
                     self.graph.add_node(words[0])
-                if (not self.graph.has_node(words[1])):
+                if not self.graph.has_node(words[1]):
                     self.graph.add_node(words[1])
-                if (len(words) == 3):
+                if len(words) == 3:
                     self.graph.add_edge(words[0], words[1],
                                         weight=float(words[2]))
 
@@ -56,16 +54,16 @@ class Graphs:
 
     def set_node_pos(self, selection='random'):
         pos = {}
-        if (selection == "circular"):
+        if selection == "circular":
             pos = nx.circular_layout(self.graph)
 
-        elif (selection == "random"):
+        elif selection == "random":
             pos = nx.random_layout(self.graph)
 
-        elif (selection == "spring"):
+        elif selection == "spring":
             pos = nx.spring_layout(self.graph)
 
-        elif (selection == "shell"):
+        elif selection == "shell":
             pos = nx.shell_layout(self.graph)
 
         else:
@@ -84,18 +82,19 @@ class Graphs:
     def check_if_weighted(self):
         self.is_weighted = False
         for u, v in self.graph.edges():
-            if ('weight' in self.graph.edge[u][v]):
+            if 'weight' in self.graph.edge[u][v]:
                 self.is_weighted = True
                 break
 
     def check_if_has_negative_weights(self):
-        if (self.is_weighted):
+        if self.is_weighted:
             for u, v in self.graph.edges():
-                if (float(self.graph.edge[u][v]['weight']) < 0):
+                if float(self.graph.edge[u][v]['weight']) < 0:
                     self.has_negative_weights = True
                     break
 
 
+    # noinspection PyRedundantParentheses
     def get_graph_diameter(self, weight):
         max_value = float('-inf')
         for u in self.graph.nodes():
@@ -124,9 +123,9 @@ class Graphs:
                                                            u, v, weight)
                     paths = list(shortest_paths)
                     number = len(paths)
-                    sum = sum + number * nx.shortest_path_length(self.graph,
-                                                                 u, v, weight)
-                    number_of_shortest_paths = number_of_shortest_paths + number
+                    sum += number * nx.shortest_path_length(self.graph,
+                                                            u, v, weight)
+                    number_of_shortest_paths += number
         return sum, number_of_shortest_paths
 
     def is_fully_connected(self):
@@ -153,13 +152,6 @@ class Graphs:
     def initialize_graph_characteristics_weighted(self):
         self.check_if_has_negative_weights()
         self.negative_cycle = nx.negative_edge_cycle(self.graph, 'weight')
-        if (not self.negative_cycle):
-            self.diameter.append(self.get_graph_diameter('weight'))
-
-    def graph_data(self, username, upload, data):
-        user = user_admin.UserAdministrator(username, '')
-        self.graphfile = user.create_temp_project(upload, data,
-                                                  self.graphtype)
 
 
     def initialize_barabasi_graph(self, n, directed):
@@ -215,11 +207,10 @@ class Graphs:
     def get_generated_graph(self, parameters):
         model = parameters['model']
         n = int(parameters['nodes'])
-        if (model != 'regular' and model != 'watts_strogatz'):
-            if (parameters['graphtype'] == 'Directed'):
-                directed = True
-            else:
-                directed = False
+        directed = False
+        if model != 'regular' and model != 'watts_strogatz' \
+                and parameters['graphtype'] == 'Directed':
+            directed = True
         if (model == 'erdos'):
             self.graph = nx.erdos_renyi_graph(n,
                                               float(parameters['probability']),
@@ -278,7 +269,7 @@ class Graphs:
             nx.set_node_attributes(self.graph, 'weighted_out_degree', values)
 
 
-    def calculate_pageRank(self):
+    def calculate_pagerank(self):
         if (self.is_weighted):
             values = nx.pagerank_numpy(self.graph, weight='weight')
         else:
@@ -325,7 +316,7 @@ class Graphs:
             for node in self.graph.nodes():
                 if (components[i].has_node(node)):
                     dict[node] = 'A' + str(counter)
-            counter = counter + 1
+            counter += 1
         nx.set_node_attributes(self.graph, connectivity, dict)
 
     def calculate_edge_betweeness(self):
@@ -341,7 +332,7 @@ class Graphs:
         self.calculate_eigenvector_centrality()
         self.calculate_edge_betweeness()
         if self.graphtype == 'Directed':
-            self.calculate_pageRank()
+            self.calculate_pagerank()
             self.calculate_in_degree_centrality()
             self.calculate_out_degree_centrality()
             self.find_connected_components('weak')
@@ -420,7 +411,11 @@ class Graphs:
     def get_edge_data(self):
         data = []
         for u, v in self.graph.edges():
-            row = (u, v, self.graph.edge[u][v]['weight'],
+            if self.is_weighted:
+                weight = self.graph.edge[u][v]['weight']
+            else:
+                weight = 1.0
+            row = (u, v, weight,
                    self.graph.edge[u][v]['betweenness'])
             data.append(row)
         return data
@@ -438,3 +433,4 @@ class Graphs:
     def get_average_values(self, values_type):
         values = nx.get_node_attributes(self.graph, values_type).values()
         return sum(values) / len(values)
+

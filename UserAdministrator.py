@@ -1,4 +1,3 @@
-import handler as hand
 import ApplicationModel as model
 from google.appengine.ext import db
 
@@ -42,24 +41,24 @@ class UserAdministrator:
         return projects
 
 
-    def update_data(self, projectname, graphtype):
+    def update_data(self, projectname, graphtype, graphfile):
         if (graphtype == 'Directed'):
             data = db.Query(model.directed_graph_info).filter(
                 'user =', self.username).filter(
-                'project =', hand.graphfile.filename)
+                'project =', graphfile.filename)
             average_nodes = db.Query(model.AverageMetricsDirected).filter(
                 'user =', self.username).filter(
-                'project =', hand.graphfile.filename).get()
+                'project =', graphfile.filename).get()
         else:
             data = db.Query(model.undirected_graph_info).filter(
                 'user =', self.username).filter(
-                'project =', hand.graphfile.filename)
+                'project =', graphfile.filename)
             average_nodes = db.Query(model.AverageMetricsUndirected).filter(
                 'user =', self.username).filter(
-                'project =', hand.graphfile.filename).get()
+                'project =', graphfile.filename).get()
         average_edges = db.Query(model.AverageEdgeMetrics).filter(
             'user =', self.username).filter(
-            'project =', hand.graphfile.filename).get()
+            'project =', graphfile.filename).get()
         for row in data:
             row.project = projectname
             row.put()
@@ -68,10 +67,10 @@ class UserAdministrator:
         average_nodes.put()
         average_edges.put()
 
-    def save_project(self, projectname, save):
+    def save_project(self, projectname, save, graphfile):
         query = db.Query(model.GraphFile).filter(
             'user = ', self.username).filter(
-            'filename =', hand.graphfile.filename).get()
+            'filename =', graphfile.filename).get()
         existing_projects = self.get_existing_projects()
         for pr in existing_projects:
             if (pr.filename == projectname and not save):
@@ -80,9 +79,9 @@ class UserAdministrator:
         project = model.GraphFile(user=self.username,
                                   filename=projectname,
                                   data=query.data,
-                                  graphtype=hand.graphfile.graph.graphtype,
-                                  image=hand.graphfile.image,
-                                  graph=hand.graphfile.graph)
+                                  graphtype=graphfile.graph.graphtype,
+                                  image=graphfile.image,
+                                  graph=graphfile.graph)
 
         project.put()
         return True
