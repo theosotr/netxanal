@@ -1,1 +1,1 @@
-__author__ = 'theo'
+__author__ = 'Thodoris Sotiropoulos'

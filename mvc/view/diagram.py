@@ -7,12 +7,11 @@ diagram for closeness centrality of graph's nodes. On X-AXIS are closeness
 centrality values and on Y-AXIS are number of nodes.
 
 """
-from mvc.controller import graphfile as current_graph
-
 __author__ = 'Thodoris Sotiropoulos'
 
 import json
 
+from mvc.controller import graphfile as current_graph
 from mvc.controller.depiction import Diagram
 from flask import request, Response, session
 from main import app
@@ -34,6 +33,7 @@ def create_diagram():
     diagram_type = request.args.get('diagram', None, type=str)
     diag = Diagram(diagram_type, graph)
     average_values = graph.graph.get_average_values(diagram_type)
+    session['diagram'] = str(diag.url)
     json_obj = {'url': diag.url, 'average': average_values}
     return Response(json.dumps(json_obj))
 

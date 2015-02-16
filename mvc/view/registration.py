@@ -11,8 +11,8 @@ __author__ = 'Thodoris Sotiropoulos'
 import json
 
 from flask import session, request, render_template, redirect, url_for, jsonify, Response
-from UserAdministrator import UserAdministrator
-from ApplicationModel import delete_data
+from mvc.model.user_model import UserAdministrator
+from mvc.model.application_model import delete_data
 from main import app
 from mvc.controller.graphfile import graphfile
 
@@ -33,11 +33,9 @@ def login():
     user = UserAdministrator(username, password)
     message = user.check_credentials()
     if message is None:
-        global current_user
         session['login'] = True
         session['showimage'] = False
         session['user'] = username
-        current_user = username
         projects = user.get_existing_projects()
         return render_template('index.html', projects=projects)
     else:
@@ -51,13 +49,11 @@ def logout():
 
     :return: Page with the login form.
     """
+    graphfile.pop(session['user'], None)
     delete_data()
-    global current_user
     session['user'] = None
-    current_user = None
     session['showimage'] = False
     session['login'] = False
-    graphfile[session['user']] = None
     return redirect(url_for('mainpage'))
 
 

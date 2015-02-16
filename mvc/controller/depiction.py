@@ -1,6 +1,8 @@
-__author__ = 'theo'
+__author__ = 'Thodoris Sotiropoulos'
 from mvc.controller.analysis import Communities
+from mvc.controller.analysis import Path
 import matplotlib
+
 matplotlib.use('AGG')
 import StringIO
 import pylab as plt
@@ -22,6 +24,7 @@ class GraphImage:
         self.communities_color = {}
         self.level = 1
         self.path_image = False
+        self.paths = None
         self.ranking = None
         self.ranking_image = False
         self.graph = graphfile.graph
@@ -48,10 +51,10 @@ class GraphImage:
             edge_labels = {}
             e1 = (u, v)
             edge_labels[tuple(e1)] = self.graph.graph.edge[u][v]['weight']
-            if (edge_list.count(str(u + v)) == 0 and self.graph.graphtype == 'Directed'):
+            if edge_list.count(str(u + v)) == 0 and self.graph.graphtype == 'Directed':
                 nx.draw_networkx_edge_labels(self.graph, pos, edge_labels=edge_labels,
                                              font_size=9, label_pos=0.2)
-                if (self.graph.graph.has_edge(v, u)):
+                if self.graph.graph.has_edge(v, u):
                     edge_lab = {}
                     e2 = (v, u)
                     edge_list.append(str(v + u))
@@ -94,6 +97,7 @@ class GraphImage:
     """
     Create graph image with the requested path depicted
     """
+
     def create_path(self, path=None):
         self.path_image = True
         self.communities_image = False
@@ -108,34 +112,34 @@ class GraphImage:
     def draw_path_nodes(self, pos):
         for path in self.paths.path_sequence:
             nx.draw_networkx_nodes(self.graph.graph, pos, nodelist=path,
-                node_size=self.image_style.node_size + 100,
-                node_color='crimson',
-                node_shape=self.image_style.node_shape)
-        rest_nodes = self.paths.get_nodes_which_are_not_in_path(self.graph.graph,
-            self.paths.path_sequence)
+                                   node_size=self.image_style.node_size + 100,
+                                   node_color='crimson',
+                                   node_shape=self.image_style.node_shape)
+        rest_nodes = Path.get_nodes_which_are_not_in_path(self.graph.graph,
+                                                          self.paths.path_sequence)
         nx.draw_networkx_nodes(self.graph.graph, pos, nodelist=rest_nodes,
-            node_size=self.image_style.node_size,
-            node_color=self.image_style.node_color,
-            node_shape=self.image_style.node_shape)
+                               node_size=self.image_style.node_size,
+                               node_color=self.image_style.node_color,
+                               node_shape=self.image_style.node_shape)
 
     def draw_path_edges(self, pos):
         all_vertices = []
         for path in self.paths.path_sequence:
-            path_vertices = self.paths.calculate_path_vertices(path)
+            path_vertices = Path.calculate_path_vertices(path)
             all_vertices.append(path_vertices)
             nx.draw_networkx_edges(self.graph.graph, pos, edgelist=path_vertices,
-                width=self.image_style.edge_width + 1,
-                edge_color="black", style="dashed")
-        rest_edges = self.paths.get_edges_which_are_not_in_paths(self.graph.graph,
-            all_vertices)
+                                   width=self.image_style.edge_width + 1,
+                                   edge_color="black", style="dashed")
+        rest_edges = Path.get_edges_which_are_not_in_paths(self.graph.graph,
+                                                           all_vertices)
         label = self.graph.get_node_label()
         nx.draw_networkx_edges(self.graph.graph, pos, rest_edges,
-            width=self.image_style.edge_width,
-            edge_color=self.image_style.edge_color,
-            style=self.image_style.edge_style)
+                               width=self.image_style.edge_width,
+                               edge_color=self.image_style.edge_color,
+                               style=self.image_style.edge_style)
         nx.draw_networkx_labels(self.graph.graph, pos, labels=label,
-            font_size=self.image_style.font_size,
-            font_color=self.image_style.font_color)
+                                font_size=self.image_style.font_size,
+                                font_color=self.image_style.font_color)
         if self.graph.is_weighted and self.image_style.edge_label:
             self.draw_edge_weights(pos)
 
@@ -159,9 +163,9 @@ class GraphImage:
                     color = (random(), random(), random())
                     self.communities_color[counter] = color
             nx.draw_networkx_nodes(g, pos, nodelist=community.nodes(),
-                node_size=self.image_style.node_size,
-                node_color=color,
-                node_shape=self.image_style.node_shape)
+                                   node_size=self.image_style.node_size,
+                                   node_color=color,
+                                   node_shape=self.image_style.node_shape)
             counter += 1
         self.communities_image = True
 
@@ -188,37 +192,37 @@ class GraphImage:
     def draw_edges(self, pos):
         label = self.graph.get_node_label()
         nx.draw_networkx_edges(self.graph.graph, pos, self.graph.graph.edges(),
-            width=self.image_style.edge_width,
-            edge_color=self.image_style.edge_color,
-            style=self.image_style.edge_style)
+                               width=self.image_style.edge_width,
+                               edge_color=self.image_style.edge_color,
+                               style=self.image_style.edge_style)
         nx.draw_networkx_labels(self.graph.graph, pos, labels=label,
-            font_size=self.image_style.font_size,
-            font_color=self.image_style.font_color)
+                                font_size=self.image_style.font_size,
+                                font_color=self.image_style.font_color)
         if self.graph.is_weighted and self.image_style.edge_label:
             self.draw_edge_weights(pos)
 
     def rank_nodes_by_color(self, pos):
         nx.draw_networkx_nodes(self.graph.graph, pos,
-            nodelist=self.graph.graph.nodes(),
-            node_size=self.image_style.node_size,
-            node_color=self.ranking.color_ranking,
-            node_shape=self.image_style.node_shape,
-            cmap=plt.get_cmap(self.ranking.cmap))
+                               nodelist=self.graph.graph.nodes(),
+                               node_size=self.image_style.node_size,
+                               node_color=self.ranking.color_ranking,
+                               node_shape=self.image_style.node_shape,
+                               cmap=plt.get_cmap(self.ranking.cmap))
 
     def rank_nodes_by_size(self, pos):
         nx.draw_networkx_nodes(self.graph.graph,
-            pos, nodelist=self.ranking.size_ranking[1],
-            node_size=self.ranking.size_ranking[0],
-            node_color=self.image_style.node_color,
-            node_shape=self.image_style.node_shape)
+                               pos, nodelist=self.ranking.size_ranking[1],
+                               node_size=self.ranking.size_ranking[0],
+                               node_color=self.image_style.node_color,
+                               node_shape=self.image_style.node_shape)
 
     def rank_nodes_by_color_and_size(self, pos):
         nx.draw_networkx_nodes(self.graph.graph, pos,
-            nodelist=self.ranking.size_ranking[1],
-            node_size=self.ranking.size_ranking[0],
-            node_color=self.ranking.color_ranking,
-            node_shape=self.image_style.node_shape,
-            cmap=plt.get_cmap(self.ranking.cmap))
+                               nodelist=self.ranking.size_ranking[1],
+                               node_size=self.ranking.size_ranking[0],
+                               node_color=self.ranking.color_ranking,
+                               node_shape=self.image_style.node_shape,
+                               cmap=plt.get_cmap(self.ranking.cmap))
 
     """
     Create graph image with a nodes ranking. Either color ranking or size ranking
@@ -258,6 +262,23 @@ class ImageStyle:
         self.edge_label = weights
 
 
+def get_x_values(measure, graphfile):
+    graph = graphfile.graph.graph
+    values = list(nx.get_node_attributes(graph, measure).values())
+    return values
+
+
+def get_diagram_url():
+    try:
+        rv = StringIO.StringIO()
+        plt.savefig(rv, format="png")
+        url = "data:image/png;base64,%s" % rv.getvalue().encode("base64").strip()
+    finally:
+        plt.clf()
+        plt.close()
+    return url
+
+
 class Diagram:
     def __init__(self, x_values_type, graphfile):
         self.x_values_type = x_values_type
@@ -267,19 +288,15 @@ class Diagram:
         self.polygon_frequencies = []
         self.central_values = []
         self.initial_values = []
-        self.values = self.get_x_values(self.x_values_type, graphfile)
+        self.values = get_x_values(self.x_values_type, graphfile)
         self.initialize_values()
         self.create_histogram()
         self.create_polygon()
-        self.url = self.get_diagram_url()
+        self.url = get_diagram_url()
 
     """
     Get requested values
     """
-    def get_x_values(self, measure, graphfile):
-        graph = graphfile.graph.graph
-        values = list(nx.get_node_attributes(graph, measure).values())
-        return values
 
     def initialize_values(self):
         min_value = min(self.values)
@@ -324,20 +341,10 @@ class Diagram:
         plt.legend()
         plt.tight_layout()
 
-    def get_diagram_url(self):
-        try:
-            rv = StringIO.StringIO()
-            plt.savefig(rv, format="png")
-            url = "data:image/png;base64,%s" % rv.getvalue().encode("base64").strip()
-        finally:
-            plt.clf()
-            plt.close()
-        return url
-
     @staticmethod
     def degree_over_time(time, graphfile):
-        G = copy.deepcopy(graphfile.graph)
-        values_to_analyze = G.calculate_degree_over_time(time)
+        graph_copy = copy.deepcopy(graphfile.graph)
+        values_to_analyze = graph_copy.calculate_degree_over_time(time)
         degree_values = values_to_analyze[0].values()
         shortest_path_values = values_to_analyze[1].values()
         x_values = values_to_analyze[0].keys()

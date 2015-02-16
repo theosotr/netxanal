@@ -15,7 +15,7 @@ import StringIO
 from base64 import decodestring
 
 from mvc.controller import graphfile as current_graph
-from flask import stream_with_context, request
+from flask import stream_with_context, request, session
 from main import app
 from werkzeug.datastructures import Headers
 from werkzeug.wrappers import Response
@@ -37,10 +37,11 @@ def download_node_info():
         creates a file in CSV format without saving it.
 
         """
-        info = current_graph.graphfile.graph.get_node_data()
+        graph = current_graph.graphfile[session['user']]
+        info = graph.graph.get_node_data()
         data = StringIO.StringIO()
         w = csv.writer(data)
-        if current_graph.graphfile.graph.graph.is_directed():
+        if graph.graph.graph.is_directed():
             w.writerow(('node', 'in_degree', 'out_degree', 'closeness',
                         'betweenness', 'eigenvector', 'pagerank', 'weak',
                         'strong', 'weighted_in_degree', 'weighted_out_degree'))
@@ -80,7 +81,8 @@ def download_edge_info():
         and then it creates a file in CSV format without saving it.
 
         """
-        info = current_graph.graphfile.graph.get_edge_data()
+        graph = current_graph.graphfile[session['user']]
+        info = graph.graph.get_edge_data()
         data = StringIO.StringIO()
         w = csv.writer(data)
         w.writerow(('source_node', 'target_node', 'weight', 'betweenness'))
@@ -109,7 +111,7 @@ def download_graph_image():
 
     :return: Image of graph in png format.
     """
-    image = current_graph.graphfile.image.url.split(",")[1]
+    image = current_graph.graphfile[session['user']].image.url.split(",")[1]
     image_output = StringIO.StringIO()
     image_output.write(decodestring(image))  # Write decoded image to buffer
     image_output.seek(0)
@@ -122,7 +124,7 @@ def download_graph_image():
     )
 
 
-@app.route('/download_diagram')
+@app.route('/download_diagram', methods=['POST'])
 def download_diagram():
     """
     Gets encoded string for png image of a frequency diagram It decodes it
@@ -130,7 +132,7 @@ def download_diagram():
 
     :return: Image of frequency diagram in a png format.
     """
-    diagram = request.form['diagram']
+    diagram = request.form['diagram'].split(',')[1]
     image_output = StringIO.StringIO()
     image_output.write(decodestring(diagram))  # Write decoded image to buffer
     image_output.seek(0)
@@ -163,10 +165,11 @@ def download_graph():
         If graph is weighted row also includes edge weight
 
         """
-        info = current_graph.graphfile.graph.get_graph_txtformat()
+        graph = current_graph.graphfile[session['user']]
+        info = graph.graph.get_graph_txtformat()
         data = StringIO.StringIO()
         for row in info:
-            if current_graph.graphfile.graph.is_weighted:
+            if graph.graph.is_weighted:
                 data.write(row[0] + " " + row[1] + " " + row[2] + "\n")
             else:
                 data.write(row[0] + " " + row[1] + "\n")

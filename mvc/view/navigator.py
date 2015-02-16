@@ -18,14 +18,13 @@ The last one is a page where a user who is not connected can enter system with
 their credentials. Moreover, unregistered users can create a new account to use
 system.
 """
-from mvc.controller import graphfile as current_graph
-
 __author__ = 'Thodoris Sotiropoulos'
 
+from mvc.controller import graphfile as current_graph
 from flask import render_template, session, redirect, url_for
 from main import app
-from ApplicationModel import delete_data
-from UserAdministrator import UserAdministrator
+from mvc.model.application_model import delete_data
+from mvc.model.user_model import UserAdministrator
 
 
 @app.route('/')
@@ -108,11 +107,11 @@ def node_info():
     if not user_graph.graph.data_exists():
         user_graph.graph.add_data()
     if user_graph.graph.graphtype == 'Directed':
-        return render_template("nodes_info.html",
+        return render_template("graph_info.html",
                                graph=user_graph.graph.graph,
                                is_weighted=user_graph.graph.is_weighted)
     else:
-        return render_template("nodes_info.html",
+        return render_template("graph_info.html",
                                graph=user_graph.graph.graph,
                                is_weighted=user_graph.graph.is_weighted)
 
@@ -129,6 +128,7 @@ def import_file():
     """
     if not session['login']:
         return redirect(url_for('mainpage'))
+    current_graph.graphfile.pop(session['user'], None)
     session["showimage"] = False
     delete_data()
     user = UserAdministrator(session['user'])
