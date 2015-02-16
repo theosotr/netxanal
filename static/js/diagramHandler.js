@@ -15,10 +15,11 @@ function selectDiagram(measure) {
  * showing the variance of average degree of graph over the time specified
  * by the user.
  */
-function dynamicAnalysis(time) {
+function dynamicAnalysis() {
 	$.getJSON($SCRIPT_ROOT + '/_dynamic_analysis', {
-			time: time
+			time: $(".time-selector").slider().slider("value")
 		}, function(data) {
+			showDownloadBar();
 			$("#path-over-time, #degree-over-time").show();
 			updatePathOverTimeDiagram(data.pathInTime);
 			updateDegreeOverTimeDiagram(data.degree);

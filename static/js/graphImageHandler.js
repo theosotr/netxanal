@@ -3,7 +3,7 @@ function findPaths() {
 		source: $('#source').val(),
 		target: $('#target').val(),
 		pathType: $("#path-type input[name='pathType']:checked").val(),
-		calculationWay: $('#pathCalculation').val()
+		calculationWay: $('#calculationWay').find("input[type='radio']:checked").val()
 	}, function(data) {
 		if (jQuery.isEmptyObject(data)) alertPathNotExists();
 		else {

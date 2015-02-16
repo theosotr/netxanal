@@ -19,3 +19,11 @@ function saveProject(graphName, save) {
         }
     });
 }
+
+function deleteProject() {
+	$.getJSON($SCRIPT_ROOT + '/_delete_project', {
+		project: window.project
+	}, function() {
+		deleteProjectFromPage();
+	});
+}

@@ -16,8 +16,15 @@ tbody {font-size: 11px;}
 	border: 1px solid white;
     display: inline-block;
 }
+input[type='file'] {background-color: #000000; color: #ffffff}
+#graph-creation {width: 80%; height: 600px;}
+#graphs {margin-left: 80%; width: 20%; margin-top: -600px; height: 600px; overflow: auto;}
+#upload div {margin-left: auto; margin-right: auto; padding: 50px;}
+#generate {margin-left: auto; margin-right: auto; width: 100%;}
+#projects label {min-width: 80%;}
 #cliquesInfo {max-height: 600px; overflow: auto;}
 #communitiesInfo {max-height: 600px; overflow: auto;}
+ul.ui-menu { max-height: 260px !important; }
 #cool {
 	background: -webkit-linear-gradient(left, #88e4ec , #800080); /* For Safari 5.1 to 6.0 */
     background: -o-linear-gradient(right, #88e4ec, #800080); /* For Opera 11.1 to 12.0 */

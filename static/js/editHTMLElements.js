@@ -147,6 +147,7 @@ function updateDiagram(url) {
     var diagram = $("#distribution");
     diagram.show();
     diagram.attr("src", url);
+    $("#download-form").find("input[type='hidden']").attr("value", url);
 }
 
 function updateTime(time) {
@@ -155,8 +156,28 @@ function updateTime(time) {
 
 function updateDegreeOverTimeDiagram(url) {
     $("#degree-over-time").attr("src", url);
+    $("#download-degree").find("input[type='hidden']").attr("value", url);
 }
 
 function updatePathOverTimeDiagram(url) {
     $("#path-over-time").attr("src", url);
+    $("#download-path").find("input[type='hidden']").attr("value", url);
+}
+
+function deleteProjectFromPage() {
+    var rowToDelete = $("#projects").find("input[value = '"
+					+ window.project + "']").attr("class").split(" ")[0];
+    $("." + rowToDelete).remove();
+}
+
+function showDownloadBar() {
+    $("#download-bar").show();
+}
+
+function warningMessage(message, element) {
+    var warningMessage = $("#" + element + "-warning");
+    warningMessage.empty();
+    warningMessage.append('<div class="ui-corner-all ui-state-error"> <p>'
+        + '<span class="ui-icon ui-icon-alert"></span><b>Warning! </b>'
+        +  message + '</p></div></div>');
 }
