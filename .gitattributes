@@ -1,2 +1,3 @@
 $ cat .gitattributes
 templates/* linguist-documentation
+static/css linguist-documentation
