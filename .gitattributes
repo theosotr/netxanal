@@ -1,2 +1,2 @@
 $ cat .gitattributes
-templates/* linguist-documentation=false
+templates/* linguist-documentation
