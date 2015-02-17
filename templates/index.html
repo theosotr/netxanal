@@ -40,7 +40,7 @@
                         || probability.spinner("value") < 0.0
                         || probability.spinner("value") == undefined) {
                     var message = "Probability has to be in range of 0 and 1.";
-                    warningMessage(message, "probability")
+                    warningMessage(message, "probability");
                     e.preventDefault();
                 }
             }
@@ -84,7 +84,7 @@
             <button class="btn btn-default dropdown-toggle" type="button" id="menu1" data-toggle="dropdown">{{ session.user }}
                 <span class="caret"></span></button>
                 <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
-                  <li role="presentation"><a role="menuitem" tabindex="-1" href="logout">Logout
+                  <li role="presentation"><a role="menuitem" tabindex="-1" href="/logout">Logout
                   <span class="ui-icon ui-icon-power" style="float: left; margin-right: .3em;"></span></a></li>
                 </ul>
         </div>
@@ -98,7 +98,18 @@
         <div id="upload">
             <form enctype="multipart/form-data" method = "POST" action = "{{ url_for('draw_graph') }}">
                 <label for="file">Upload file: </label>
-                <input id="file" type="file" name="file"><br>
+                <input id="file" type="file" name="file">
+                {% if wrong_file %}
+                    <div class="ui-widget" style="display: inline-block; padding: 0px;">
+                        <div class="ui-corner-all ui-state-error" style="padding: 0px;;">
+                            <p style="padding: 0px;">
+                                <span class="ui-icon ui-icon-alert"></span>
+                                <b>Warning! </b>File you just uploaded is not supported.
+                            </p>
+                        </div>
+                    </div>
+                {% endif %}
+                <br>
                 <label for="graph-type">Select graph type: </label>
                 <div id="graph-type" style="display: inline-block;">
                     <input id="undir" type="radio" name="graphtype" value="Undirected" checked><label for="undir">Undirected</label>
@@ -313,13 +324,13 @@
     <h3>Find paths</h3>
     <div id="path">
         <label for="#source">Select source node: </label>
-	   <select id = "source" name = "source">
+	   <select id = "source">
 	    {% for node in nodes %}
            <option value = "{{ node }}">Node: {{ node }}</option>
         {% endfor %}
        </select><br>
         <label for="#target">Select target node: </label>
-	   <select id = "target" name = "target">
+	   <select id = "target">
 	    {% for node in nodes %}
            <option value = "{{ node }}">Node: {{ node }}</option>
         {% endfor %}
@@ -399,11 +410,11 @@
                     <option value = "Reds">Reds</option>
                 </select><br><br>
 				Color Nodes based on:
-	   			<select id = "colorNodes" name = "colorNodes">
+	   			<select id = "colorNodes">
 	   	    {% else %}
 	   		    <div id = "sizeRanking">
 				    Rank Node size based on:
-	   			    <select id = "sizeNodes" name = "sizeNodes">
+	   			    <select id = "sizeNodes">
 	   	    {% endif %}
                 <option value = "betweenness">Betweeness Centrality</option>
                 <option value = "closeness">Closeness Centrality</option>
