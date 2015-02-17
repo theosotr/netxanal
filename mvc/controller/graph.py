@@ -42,18 +42,25 @@ class Graphs:
             self.graphtype = 'Undirected'
         lines = str(data).split('\n')
         for line in lines:
-            words = str(line).split(' ')
-            if len(words) != 1:
-                if not self.graph.has_node(words[0]):
-                    self.graph.add_node(words[0])
-                if not self.graph.has_node(words[1]):
-                    self.graph.add_node(words[1])
-                if len(words) == 3:
-                    self.graph.add_edge(words[0], words[1],
-                                        weight=float(words[2]))
+            if line:
+                words = str(line).split(' ')
+                if len(words) == 2 or len(words) == 3:
+                    if not self.graph.has_node(words[0]):
+                        self.graph.add_node(words[0])
+                    if not self.graph.has_node(words[1]):
+                        self.graph.add_node(words[1])
+                    if len(words) == 3:
+                        try:
+                            self.graph.add_edge(words[0], words[1],
+                                                weight=float(words[2]))
+                        except ValueError:
+                            raise IOError
 
-                else:
-                    self.graph.add_edge(words[0], words[1])
+                    else:
+                        self.graph.add_edge(words[0], words[1])
+                elif len(words) == 1 or len(words) > 3:
+                    raise IOError
+
 
     """
     Save in datastore nodes position
