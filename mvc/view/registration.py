@@ -36,8 +36,7 @@ def login():
         session['login'] = True
         session['showimage'] = False
         session['user'] = username
-        projects = user.get_existing_projects()
-        return render_template('index.html', projects=projects)
+        return redirect(url_for('mainpage'))
     else:
         return render_template('login.html', message=message)
 
@@ -54,7 +53,7 @@ def logout():
     session['user'] = None
     session['showimage'] = False
     session['login'] = False
-    return redirect(url_for('mainpage'))
+    return redirect(url_for('index'))
 
 
 @app.route('/_check_user')

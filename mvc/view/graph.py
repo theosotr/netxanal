@@ -51,12 +51,15 @@ def draw_graph():
 
     """
     if not session['login']:
-        return redirect(url_for('mainpage'))
+        return redirect(url_for('index'))
     f = request.files['file']
     filestream = f.read()
     parameters = request.form
-    graph = Graphs(parameters, layout='random', upload=True,
-                   data=filestream)
+    try:
+        graph = Graphs(parameters, layout='random', upload=True,
+                       data=filestream)
+    except IOError:
+        return redirect(url_for('mainpage', warning=True))
     user = user_admin.UserAdministrator(session['user'])
     current_graph.graphfile[session['user']] = user.create_temp_project(graph)
     if graph.graphtype == 'Directed':
@@ -225,8 +228,7 @@ def rank_nodes():
     ranking_way = request.args.get('rankingWay', None, type=str)
     ranking = Ranking(ranking_type=ranking_way, graphfile=graph,
                       color_measure=color_measure,
-                      size_measure=size_measure, cmap=colors
-    )
+                      size_measure=size_measure, cmap=colors)
     graph.image.ranking_nodes_image(ranking)
     if ranking_way == 'colorRanking' or ranking_way == 'bothRanking':
         urls = [graph.image.url, graph.image.ranking.colorbase]
@@ -244,7 +246,7 @@ def open_project():
     :return: Main page of graph visualization.
     """
     if not session['login']:
-        return redirect(url_for('mainpage'))
+        return redirect(url_for('index'))
     projectname = request.form['project']
     user = user_admin.UserAdministrator(session['user'])
     current_graph.graphfile[session['user']] = user.import_existing_project(projectname)
@@ -266,7 +268,7 @@ def random_graph():
     :return: Main page of graph visualization.
     """
     if not session['login']:
-        return redirect(url_for('mainpage'))
+        return redirect(url_for('index'))
     parameters = request.form
     r_graph = Graphs(parameters, 'random', False)
     user = user_admin.UserAdministrator(session['user'])

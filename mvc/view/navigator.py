@@ -28,7 +28,7 @@ from mvc.model.user_model import UserAdministrator
 
 
 @app.route('/')
-def mainpage():
+def index():
     """
     Go to the page when a user who is not connected or registered to the system
     first visit. Contains login and registration forms to enter system.
@@ -102,7 +102,7 @@ def node_info():
 
     """
     if not session['login']:
-        return redirect(url_for('mainpage'))
+        return redirect(url_for('index'))
     user_graph = current_graph.graphfile[session['user']]
     if not user_graph.graph.data_exists():
         user_graph.graph.add_data()
@@ -127,10 +127,16 @@ def import_file():
 
     """
     if not session['login']:
-        return redirect(url_for('mainpage'))
+        return redirect(url_for('index'))
     current_graph.graphfile.pop(session['user'], None)
     session["showimage"] = False
     delete_data()
+    return redirect(url_for('mainpage'))
+
+
+@app.route('/mainpage', defaults={'warning': False})
+@app.route('/mainpage/<warning>')
+def mainpage(warning):
     user = UserAdministrator(session['user'])
     projects = user.get_existing_projects()
-    return render_template('index.html', projects=projects)
+    return render_template('index.html', projects=projects, wrong_file=warning)
