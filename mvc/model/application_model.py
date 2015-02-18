@@ -36,6 +36,9 @@ class GraphFile(db.Model):
 class User(db.Model):
     username = db.StringProperty()
     password = db.StringProperty()
+    firstName = db.StringProperty()
+    lastName = db.StringProperty()
+    email = db.StringProperty()
 
 
 def delete_data():
