@@ -25,6 +25,37 @@ input[type='file'] {background-color: #000000; color: #ffffff}
 #cliquesInfo {max-height: 600px; overflow: auto;}
 #communitiesInfo {max-height: 600px; overflow: auto;}
 ul.ui-menu { max-height: 260px !important; }
+#menuBar {color: #ffffff; background-color: #cd0a0a;}
+#navbar input {height: 35px;}
+#appDesc {
+    height:800px;
+    width: 60%;
+    margin-top: 50px;
+}
+#registration {
+    margin-left: 60%;
+    width: 40%;
+	margin-top: -700px;
+	height: 800px;
+}
+#registration input {height: 30px;}
+.asterisc {
+    color: #ff0000;
+    font-size: 18px;
+    font-weight: bold;
+}
+.checkInputs {  color: red;  }
+#registrationForm {
+    margin-left: auto;
+    margin-right: auto;
+    width: 70%;
+}
+
+#footer {
+    max-height: 100px;
+    bottom: 0;
+    width: 100%;
+}
 #cool {
 	background: -webkit-linear-gradient(left, #88e4ec , #800080); /* For Safari 5.1 to 6.0 */
     background: -o-linear-gradient(right, #88e4ec, #800080); /* For Opera 11.1 to 12.0 */

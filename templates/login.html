@@ -1,43 +1,135 @@
-<!DOCTYPE HTML>
+<!DOCTYPE html>
 <html>
-  <head>
-    <title>Application for Network Analysis</title>
-    <script type="text/javascript" src="{{url_for('static', filename='js/functios.js') }}"></script>
-    <script type="text/javascript" src="{{url_for('static', filename='js/jquery.js') }}"></script>
-    <link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/logstyle.css') }}">
+<head>
+   <title>Application for Network Analysis</title>
+    <link rel="stylesheet" media="screen" href="{{ url_for('static', filename='css/bootstrap6.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+    <link rel="stylesheet" type="text/css" media="screen" href="{{ url_for('static', filename='css/bootstrap-responsive.css') }}"/>
+    <link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/jquery-ui.css') }}">
     <script type=text/javascript>
-	$SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
-</script>
-<script>
-    window.onload=initReload;
-	function initReload() {
-	    $('#fs2').hide();
-	}
-</script>
-  </head>
-  <body>
-  {% if message %}<p id=error><strong>Error:</strong> {{ message }}{% endif %}
-   <form method = "POST" action = "{{ url_for('login') }}">
-    <fieldset id = "fs1">
-    <legend>Sign in</legend>
-	Username:
-	<input type = "text" name = "username"/>
-	Password:
-	<input type = "password" name = "password"/><br><br>
-	<input type = "submit" value = "Log in"/>
-	</fieldset>
-	</form><br><br>
-	<span id = "message">If you don't have an account, create a new!</span><br>
-	<input id = "new_account" onclick = "hideElements()" type = "submit" value = "Create a new account"/>
-	  <fieldset id = "fs2">
-	  <legend>Create a new account</legend>
-	  Username:
-	  <input id = "user" type = "text" onchange = "checkIfUsernameExists()" name = "username"/><span id = 'check_username'></span><br><br>
-	  Password:
-	  <input id = "new_pass" type = "password" name = "password"/><br>
-	  Rewrite your password:
-	  <input type = "password" onchange = "checkPasswords()" name = "password2" id = "new_pass2"/><span id = "check_passwords"></span><br><br>
-	  <input type = "submit" value = "Create account" onclick = "createAccount()"/>
-	  </fieldset>
-  </body>
+	    $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+    </script>
+  <script type="text/javascript" src="{{url_for('static', filename='js/jquery.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/ie10-viewport-bug-workaround.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/jquery-ui.js') }}"></script>
+  <script type="text/javascript" src="{{url_for('static', filename='js/jquery.tablesorter.js') }}"></script>
+  <script type="text/javascript" src="{{url_for('static', filename='js/functios.js') }}"></script>
+  <script type="text/javascript" src="{{ url_for('static', filename='js/graphInfoHandler.js') }}"></script>
+  <script type="text/javascript" src="{{ url_for('static', filename='js/editHTMLElements.js') }}"></script>
+  <script type="text/javascript" src="{{ url_for('static', filename='js/registrationHandler.js') }}"></script>
+  <link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/pagestyle.css') }}">
+  <script>
+      $(function() {
+          $("#pages").buttonset();
+          $("button").not("#toggle-button").button();
+          $("#registration").hide();
+      });
+  </script>
+</head>
+<body>
+<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+  <div id = "menuBar" class="container-fluid">
+    <div class="navbar-header">
+      <button id="toggle-button" type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a style="color: #ffffff" class="navbar-brand" href="mainpage.jsp">Welcome to netXanal!</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <form method="post" action="{{ url_for('login') }}" class="navbar-form navbar-right" role="form">
+        <div class="form-group">
+          <input type="text" placeholder="Username" class="form-control" name="username">
+        </div>
+        <div class="form-group">
+          <input type="password" placeholder="Password" class="form-control" name="password">
+        </div>
+        <input type="hidden" value="index" name="source">
+        <button type="submit" class="btn btn-primary">Sign in</button>
+        {% if session.warningMessage %}
+          <div style="color: #ffff00; text-align: center;">
+          	<span class="ui-icon ui-icon-alert"></span>
+              {{ session.warningMessage }}
+          </div>
+        {% endif %}
+      </form>
+    </div><!--/.navbar-collapse -->
+  </div>
+</nav>
+<div id = "appDesc">
+  <div class="panel panel-warning">
+    <div class="panel-body">
+      <div id = "description" class="jumbotron">
+        <div class="ui-widget">
+            <div class="ui-corner-all ui-state-highlight">
+                <h6 style="font-size: 56px; text-align: center;" class = "h1">Graph Analysis with netXanal</h6>
+            </div>
+        </div>
+        <img src="{{ url_for('static', filename='images/graph.png') }}">
+          <div class="ui-widget">
+              <div class="ui-corner-all ui-state-highlight" style="padding: 0.7em;">
+                  <span class="ui-icon ui-icon-info"></span>
+                    <p style="font-size: 18px;" id = "message" class="lead"><b>netXanal lets you analyze graphs by offering many featues</b>:
+                        <ul>
+                            <li>Graph visualization</li>
+                            <li>Path detections</li>
+                            <li>Community detections</li>
+                            <li>Node ranking</li>
+                            <li>Measure calculation (centralities, clustering, connectivity)</li>
+                            <li>Data visualization</li>
+                            <li>Generation of random graphs</li>
+                        </ul>
+                        ...and more.
+                    </p>
+              </div>
+          </div>
+        <div class="alert alert-info" role="alert">
+          All you have to do is to register system for free! Do not hesitate.
+        </div>
+        <p style="text-align: center;">
+            <button onclick = "registrationFormVisibility(); scrollToRegistrationForm();" type="submit" class="btn btn-primary">
+                Register now
+            </button>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+<div id = "registration">
+  <h3 style="text-align: center;">Registration form</h3>
+  <div id = "registrationForm">
+    <form>
+    <b>First name</b><span class = "asterisc">*</span>
+    <input id = "firstName" type="text" name = "firstName" class="form-control" placeholder="First name"><br>
+    <b>Last name</b><span class = "asterisc">*</span>
+    <input id = "surname" type="text" name = "surname" class="form-control" placeholder="Last name"><br>
+    <b>Username</b><span class = "asterisc">*</span><span id = "acceptusername" class = "checkInputs"></span>
+    <input id = "username" name = "username" onchange = "checkInputIfExists('username')" type="text" class="form-control" placeholder="Username"><br>
+    <b>e-mail</b><span class = "asterisc">*</span><span id = "acceptemail" class = "checkInputs"></span>
+    <div class="input-group">
+      <div class="input-group-addon">@</div>
+      <input id = "email" class="form-control" name = "email" onchange = "checkInputIfExists('email')" type="email" placeholder="e-mail">
+    </div><br>
+    <b>Password</b><span class = "asterisc">*</span>
+    <input id = "pswrd1" type="password" name = "password" class="form-control" placeholder="Password"><br>
+    <b>Confirm password</b><span class = "asterisc">*</span>
+    <input id = "pswrd2" type="password" name = "password2" class="form-control" onchange = "verifyPasswords()" placeholder="Rewrite password"><br>
+    <span id = "acceptPswrd" class = "checkInputs"></span><br><br>
+    <span class = "asterisc">*</span>Field is required<br><br>
+    <button onclick = "createAccount()" type="button" class="btn btn-primary">Confirm</button>
+    <button type="reset" class="btn btn-primary">Cancel</button>
+    </form>
+  </div>
+</div>
+<div style="margin-top: 800px;" id = "signature" class="ui-widget">
+  <div id = "footer" class="ui-corner-all ui-state-error">
+    <p id="leftfooter"><i>Developed by Thodoris Sotiropoulos</i></p>
+    <p id="rightfooter">&copy; 2014-2015 Athens University of Economics and Business - Department
+    of Management Science and Technology</p>
+  </div>
+</div>
+</body>
 </html>
