@@ -3,9 +3,13 @@ from mvc.model import application_model as model
 
 
 class UserAdministrator:
-    def __init__(self, username, password=""):
+    def __init__(self, username='', password="", first_name='', last_name='',
+                 email=''):
         self.username = username
         self.password = password
+        self.first_name = first_name
+        self.last_name = last_name
+        self.email = email
 
     def check_credentials(self):
         user = db.Query(model.User).filter('username =', self.username)
@@ -17,8 +21,11 @@ class UserAdministrator:
             message = None
         return message
 
-    def user_exists(self):
-        user = db.Query(model.User).filter('username =', self.username)
+    def user_exists(self, input_type):
+        if input_type == 'username':
+            user = db.Query(model.User).filter('username =', self.username)
+        else:
+            user = db.Query(model.User).filter('email =', self.email)
         exists = False
         if user.count() == 0:
             return exists
@@ -29,7 +36,9 @@ class UserAdministrator:
     def add_user(self):
         completion = False
         if db.Query(model.User).filter('username =', self.username).count() == 0:
-            user = model.User(username=self.username, password=self.password)
+            user = model.User(username=self.username, password=self.password,
+                              firstName=self.first_name, lastName=self.last_name,
+                              email=self.email)
             user.put()
             completion = True
         return completion
