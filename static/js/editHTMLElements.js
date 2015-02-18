@@ -181,3 +181,19 @@ function warningMessage(message, element) {
         + '<span class="ui-icon ui-icon-alert"></span><b>Warning! </b>'
         +  message + '</p></div></div>');
 }
+
+function registrationFormVisibility() {
+    var registrationForm = $("#registration");
+    if (registrationForm.is(":visible")) registrationForm.hide();
+    else registrationForm.show();
+}
+
+/**
+ * Jump to the registration form.
+ */
+function scrollToRegistrationForm() {
+	var MILLI_SECONDS = 2000;
+	$('html, body').animate({
+		scrollTop: $("#registration").offset().top
+	}, MILLI_SECONDS);
+}
