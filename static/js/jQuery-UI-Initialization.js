@@ -66,6 +66,7 @@ function initializeToolTip() {
 function initializeTabs() {
     $("#tabs").tabs();
     $("#graph-creation").tabs();
+    $("#graphInfo").tabs();
 }
 
 function initializeAccordion() {

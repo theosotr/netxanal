@@ -197,3 +197,15 @@ function scrollToRegistrationForm() {
 		scrollTop: $("#registration").offset().top
 	}, MILLI_SECONDS);
 }
+
+function removeProgressBar() {
+    $("#progressbar").remove();
+}
+
+function createWaitingBar(element) {
+    removeProgressBar();
+    element.append('<div id="progressbar">Please, wait...</div>');
+     $( "#progressbar" ).progressbar({
+        value: false
+     });
+}
