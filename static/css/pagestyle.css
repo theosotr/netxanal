@@ -26,7 +26,6 @@ input[type='file'] {background-color: #000000; color: #ffffff}
 #communitiesInfo {max-height: 600px; overflow: auto;}
 ul.ui-menu { max-height: 260px !important; }
 #menuBar {color: #ffffff; background-color: #cd0a0a;}
-#navbar input {height: 35px;}
 #appDesc {
     height:800px;
     width: 60%;
@@ -45,6 +44,7 @@ ul.ui-menu { max-height: 260px !important; }
     font-weight: bold;
 }
 .checkInputs {  color: red;  }
+input[type=text], input[type=password] {height: 35px;}
 #registrationForm {
     margin-left: auto;
     margin-right: auto;
