@@ -1,3 +1,10 @@
+"""
+This module contains classes that represent entities of the database of
+application.
+"""
+__author__ = 'Thodoris Sotiropoulos'
+
+
 from google.appengine.ext import db
 import pickle
 from flask import session
@@ -25,6 +32,16 @@ class ObjectProperty(db.BlobProperty):
 
 
 class GraphFile(db.Model):
+    """
+    This class represents a graph which user analyze.
+
+    Attributes:
+    user: User who analyze graph.
+    filename: Name of analysis progress.
+    graphtype: Type of graph, Directed or Undirected.
+    image: Encoded String for graph visualization based on base64 encoding.
+    graph: Graph object to be analyzed.
+    """
     user = db.StringProperty()
     filename = db.StringProperty()
     data = db.BlobProperty()
@@ -34,6 +51,20 @@ class GraphFile(db.Model):
 
 
 class User(db.Model):
+    """
+    A class that represents user which is registered to the system. Not a guest
+    user.
+
+    User who is registered to the system he has to give his credentials
+    (username and password) to enter system.
+
+    Attributes:
+    username: Username of user.
+    password: Password of user.
+    firstName: First name of user.
+    lastName: Surname of user.
+    email: email of user.
+    """
     username = db.StringProperty()
     password = db.StringProperty()
     firstName = db.StringProperty()
@@ -42,6 +73,10 @@ class User(db.Model):
 
 
 def delete_data():
+    """
+    Deletes temporary progress of a graph which a user analyze when user wants
+    to import a new graph or to logout.
+    """
     query4 = db.Query(GraphFile).filter('user =', session['user']).filter(
         'filename =', 'file.txt')
     list4 = query4.fetch(limit=10000)
