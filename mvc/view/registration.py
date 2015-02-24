@@ -10,8 +10,8 @@ __author__ = 'Thodoris Sotiropoulos'
 
 import json
 
-from flask import session, request, render_template, redirect, url_for, jsonify, Response
-from mvc.model.user_model import UserAdministrator
+from flask import session, request, redirect, url_for, Response
+from mvc.model.user_model import User
 from mvc.model.application_model import delete_data
 from main import app
 from mvc.controller.graphfile import graphfile
@@ -30,15 +30,17 @@ def login():
     """
     username = request.form['username']
     password = request.form['password']
-    user = UserAdministrator(username, password)
+    user = User(username, password)
     message = user.check_credentials()
     if message is None:
+        session.pop('warningMessage', None)
         session['login'] = True
         session['showimage'] = False
         session['user'] = username
         return redirect(url_for('mainpage'))
     else:
-        return render_template('login.html', message=message)
+        session['warningMessage'] = message
+        return redirect(url_for('index'))
 
 
 @app.route('/logout', methods=['GET', 'POST'])
@@ -71,15 +73,16 @@ def check_username():
 
     :return: Message to user, if username is accepted or not.
     """
-    username = request.args.get('username', None, type=str)
-    user = UserAdministrator(username, '')
-    if not user.user_exists():
-        if len(username) > 3:
-            return Response(json.dumps('Your username is accepted!'))
-        else:
-            return Response(json.dumps('Username must have at least 3 characters'))
+    input_value = request.args.get('value', None, type=str)
+    input_type = request.args.get('inputType', None, type=str)
+    if input_type == 'username':
+        user = User(username=input_value)
     else:
-        return Response(json.dumps('Username already exists!'))
+        user = User(email=input_value)
+    if not user.user_exists(input_type):
+        return Response(json.dumps('Your ' + input_type + ' is accepted!'))
+    else:
+        return Response(json.dumps(input_type + ' already exists!'))
 
 
 @app.route('/_new_account', methods=['GET', 'POST'])
@@ -87,6 +90,9 @@ def new_account():
     """ A new user is added to the system. """
     username = request.args.get('username', None, type=str)
     password = request.args.get('password', None, type=str)
-    user = UserAdministrator(username, password)
+    first_name = request.args.get('name', None, type=str)
+    last_name = request.args.get('lastName', None, type=str)
+    email = request.args.get('email', None, type=str)
+    user = User(username, password, first_name, last_name, email)
     user.add_user()
-    return jsonify()
+    return Response(json.dumps('Your registration completed!'))

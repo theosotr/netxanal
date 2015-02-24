@@ -13,7 +13,7 @@ import json
 from mvc.controller import graphfile as current_graph
 from flask import request, Response, session, jsonify, render_template
 from main import app
-from mvc.model.user_model import UserAdministrator
+from mvc.model.user_model import User
 
 
 @app.route("/_save_project")
@@ -33,7 +33,7 @@ def save_project():
         graph.graph.add_data()
     projectname = request.args.get("project", None, type=str)
     save = request.args.get("saveAction", None, type=bool)
-    user = UserAdministrator(session['user'])
+    user = User(session['user'])
     completion = user.save_project(projectname, save, graph)
     if completion:
         return Response(json.dumps(True))
@@ -45,7 +45,7 @@ def save_project():
 def delete_project():
     """ Deletes a specific graph from the list of saved graphs of user. """
     projectname = request.args.get('project', None, type=str)
-    user = UserAdministrator(session['user'])
+    user = User(session['user'])
     user.delete_project(projectname)
     return jsonify()
 
@@ -53,6 +53,6 @@ def delete_project():
 @app.route('/projects')
 def projects():
     """ Gets the list of saved graph of user. """
-    user = UserAdministrator(session['user'])
+    user = User(session['user'])
     projectlist = user.get_existing_projects()
     return render_template('dialogs.html', projects=projectlist)

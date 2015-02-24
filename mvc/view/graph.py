@@ -60,7 +60,7 @@ def draw_graph():
                        data=filestream)
     except IOError:
         return redirect(url_for('mainpage', warning=True))
-    user = user_admin.UserAdministrator(session['user'])
+    user = user_admin.User(session['user'])
     current_graph.graphfile[session['user']] = user.create_temp_project(graph)
     if graph.graphtype == 'Directed':
         session['undirected'] = False
@@ -196,7 +196,7 @@ def find_cliques():
 
     """
     graph = current_graph.graphfile[session['user']]
-    cliques = Communities(graph.graph.graph)
+    cliques = Community(graph.graph.graph)
     return Response(json.dumps(cliques.cliques))
 
 
@@ -248,7 +248,7 @@ def open_project():
     if not session['login']:
         return redirect(url_for('index'))
     projectname = request.form['project']
-    user = user_admin.UserAdministrator(session['user'])
+    user = user_admin.User(session['user'])
     current_graph.graphfile[session['user']] = user.import_existing_project(projectname)
     graph = current_graph.graphfile[session['user']]
     if graph.graphtype == "Directed":
@@ -271,7 +271,7 @@ def random_graph():
         return redirect(url_for('index'))
     parameters = request.form
     r_graph = Graphs(parameters, 'random', False)
-    user = user_admin.UserAdministrator(session['user'])
+    user = user_admin.User(session['user'])
     current_graph.graphfile[session['user']] = user.create_temp_project(r_graph)
     graph = current_graph.graphfile[session['user']]
     if current_graph.graphfile[session['user']].graph.graphtype == "Directed":
@@ -303,7 +303,6 @@ def dynamic_graph():
                            edges=graph.graph.number_of_edges,
                            is_weighted=graph.graph.is_weighted,
                            url=graph.image.url,
-                           diameter=graph.graph.diameter,
                            negative_cycle=graph.graph.negative_cycle,
                            average=graph.graph.average_shortest_path_length,
                            number=graph.graph.number_of_shortest_paths,
@@ -311,6 +310,8 @@ def dynamic_graph():
                            density=graph.graph.density,
                            is_DAG=graph.graph.is_DAG,
                            is_connected=graph.graph.is_connected,
+                           diameter=graph.graph.diameter,
+                           average_path=graph.graph.average_shortest_path_length,
                            growing=graph.graph.growing,
                            new_edges=edges)
 

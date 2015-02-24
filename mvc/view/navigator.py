@@ -24,7 +24,7 @@ from mvc.controller import graphfile as current_graph
 from flask import render_template, session, redirect, url_for
 from main import app
 from mvc.model.application_model import delete_data
-from mvc.model.user_model import UserAdministrator
+from mvc.model.user_model import User
 
 
 @app.route('/')
@@ -53,12 +53,13 @@ def graph():
                            edges=user_graph.graph.number_of_edges,
                            is_weighted=user_graph.graph.is_weighted,
                            url=user_graph.image.url,
-                           diameter=user_graph.graph.diameter,
                            negative_cycle=user_graph.graph.negative_cycle,
                            negative_weights=user_graph.graph.has_negative_weights,
                            density=user_graph.graph.density,
                            is_DAG=user_graph.graph.is_DAG,
                            is_connected=user_graph.graph.is_connected,
+                           diameter=user_graph.graph.diameter,
+                           average_path=user_graph.graph.average_shortest_path_length,
                            growing=user_graph.graph.growing)
 
 
@@ -137,6 +138,6 @@ def import_file():
 @app.route('/mainpage', defaults={'warning': False})
 @app.route('/mainpage/<warning>')
 def mainpage(warning):
-    user = UserAdministrator(session['user'])
+    user = User(session['user'])
     projects = user.get_existing_projects()
     return render_template('index.html', projects=projects, wrong_file=warning)
