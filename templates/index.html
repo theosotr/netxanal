@@ -24,6 +24,8 @@
   <link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/pagestyle.css') }}">
     <link rel="stylesheet" media="screen" type="text/css" href="{{ url_for('static', filename='css/colpick.css') }}" />
 	<script type="text/javascript" src="{{ url_for('static', filename='js/colpick.js') }}"></script>
+    <link rel="shortcut icon" href="{{ url_for('static', filename='images/favicon.ico') }}" type="image/x-icon">
+    <link rel="icon" href="{{ url_for('static', filename='images/favicon.ico') }}" type="image/x-icon">
 <script>
     var project;
 	$(function() {
@@ -187,6 +189,13 @@
         </form>
     </div>
     {% include 'dialogs.html' %}
+    <div id = "signature" class="ui-widget">
+        <div id = "footer" class="ui-corner-all ui-state-error">
+            <p id="leftfooter"><i>Developed by Thodoris Sotiropoulos</i></p>
+            <p id="rightfooter">&copy; 2014-2015 Athens University of Economics and Business - Department
+            of Management Science and Technology</p>
+        </div>
+    </div>
 </body>
   {% else %}
 <body>
@@ -294,7 +303,11 @@
    						<b>Graph density: </b>{{ density }}<br>
    						<b>Negative weights: </b>{{ negative_weights }}<br>
    						<b>Negative cycle: </b>{{negative_cycle}}<br>
-   						<b>Diameter based on path length: </b>{{diameter[0]}}<br><br>
+   						<b>Diameter: </b>{{ diameter }}<br>
+                        <b>Average shortest path length: </b>{{ average_path[0] }}<br>
+                        {% if is_weighted %}
+                            <b>Average shortest path length(weight): </b>{{ average_path[1] }}<br><br>
+                        {% endif %}
                     </p>
                 </div>
             </div>
@@ -358,7 +371,7 @@
         {% endif %}
         <button id="findPath" onclick="findPaths()">Search Path</button>
         <div id="pathInfo" class="ui-widget">
-        </div>
+        </div><br><br>
     </div>
     <h3>Find communities</h3>
     <div id="communities">
@@ -372,13 +385,13 @@
                 <p style="font-size: 10px;"><span class="ui-icon ui-icon-alert" style="float: left; margin-right: .3em;"></span>
                 <strong>Note: </strong>Use of Girvan - Newman algorithm for community detection</p>
             </div>
-        </div>
+        </div><br><br>
     </div>
     <h3>Find cliques</h3>
     <div id="cliques">
         <button id="findCliques" onclick="findCliques()">Find cliques</button>
         <div id="cliquesInfo" class="ui-widget">
-        </div>
+        </div><br><br>
     </div>
     <h3>Rank nodes</h3>
     <div id="rank-nodes">
@@ -438,9 +451,16 @@
 	        </div>
 		{% endfor %}
         <button onclick="rankNodes()">Rank nodes</button>
-    </div>
+    </div><br><br>
     </div>
     {% include "dialogs.html" %}
+    <div style="margin-top: 400px;" id = "signature" class="ui-widget">
+        <div id = "footer" class="ui-corner-all ui-state-error">
+            <p id="leftfooter"><i>Developed by Thodoris Sotiropoulos</i></p>
+            <p id="rightfooter">&copy; 2014-2015 Athens University of Economics and Business - Department
+            of Management Science and Technology</p>
+        </div>
+    </div>
    </body>
    {% endif %}
 </HTML>

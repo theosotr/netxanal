@@ -24,6 +24,8 @@
   <link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/pagestyle.css') }}">
     <link rel="stylesheet" media="screen" type="text/css" href="{{ url_for('static', filename='css/colpick.css') }}" />
 	<script type="text/javascript" src="{{ url_for('static', filename='js/colpick.js') }}"></script>
+    <link rel="shortcut icon" href="{{ url_for('static', filename='images/favicon.ico') }}" type="image/x-icon">
+    <link rel="icon" href="{{ url_for('static', filename='images/favicon.ico') }}" type="image/x-icon">
   <script type=text/javascript>
 	$SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
 </script>
@@ -119,7 +121,7 @@
          </div>
 		{% if growing %}
         <div id="dynamicDiv">
-            <div class="ui-widget">
+            <div id="dynamic-info" class="ui-widget">
                 <div class="ui-corner-all ui-state-highlight">
                     <p style="text-align: center;">
                         <span class="ui-icon ui-icon-info" style="float: right; margin-right: .3em;"></span>
@@ -128,7 +130,7 @@
                         </button><br>
                         <span class="time">Time: 50</span><br>
                     </p>
-                    <div style="width: 40%; margin-right: auto; margin-left: auto;" class="time-selector"></div>
+                    <div style="width: 40%; margin-right: auto; margin-left: auto;" class="time-selector"></div><br>
                 </div>
             </div>
             <div id="download-bar" style="width: 100%; height:50px;">
@@ -157,5 +159,13 @@
 		{% endif %}
     </div>
     {% include 'diagram_selector.html' %}
+    <div style="margin-top: 50px;
+    " id = "signature" class="ui-widget">
+        <div id = "footer" class="ui-corner-all ui-state-error">
+            <p id="leftfooter"><i>Developed by Thodoris Sotiropoulos</i></p>
+            <p id="rightfooter">&copy; 2014-2015 Athens University of Economics and Business - Department
+            of Management Science and Technology</p>
+      </div>
+    </div>
 </body>
 </html>
