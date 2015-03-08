@@ -1,3 +1,11 @@
 $ cat .gitattributes
 templates/* linguist-documentation
 static/css/* linguist-documentation
+static/js/* linguist-vendored
+static/js/diagramHandler.js linguist-vendored=false
+static/js/editHTMLElements.js linguist-vendored=false
+static/js/graphImageHandler.js linguist-vendored=false
+static/js/graphInfoHandler.js linguist-vendored=false
+static/js/jQuery-UI-Initialization.js linguist-vendored=false
+static/js/mathematicalModels.js linguist-vendored=false
+static/js/registrationHandler.js linguist-vendored=false
