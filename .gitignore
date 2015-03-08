@@ -3,4 +3,3 @@
 lib/
 !lib/README.md
 .DS_Store
-*.css

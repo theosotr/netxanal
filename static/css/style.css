@@ -1,0 +1,78 @@
+@CHARSET "UTF-8";
+body{background-color: #e1e1e8}
+#menuBar {background-color: #99ca63}
+#symbol {color: red; font-size: 25px;}
+#div1 {
+    position: absolute;
+    top: 5px;
+    height: 900px;
+    border: solid;
+    width: 200px;
+    left: 0px;
+}
+#graphImage{
+	position: absolute;
+	left: 300px;
+	width: 800px;
+	height:600px;
+}
+
+#colorbase {
+    height: 326px;
+    left: 396px;
+    position: absolute;
+    top: 600px;
+    width: 614px;
+}
+#info {
+    position: absolute;
+    top: 50px;
+    left: 700px;
+}
+#nc1, #ec1, #fc1 {
+    background: #ff0000;
+}
+#nc2, #ec2, #fc2 {
+    background: #0000ff;
+}
+#nc3, #ec3, #fc3  {
+	background: #ffff00;
+}
+#nc4, #ec4, #fc4  {
+	background: #00ff00;
+}
+#nc5, #ec5, #fc5  {
+	background: #ffa500;
+}
+#nc6, #ec6, #fc6  {
+	background: #808080;
+}
+#nc7, #ec7, #fc7  {
+	background: #ffc0cb;
+}
+#nc8, #ec8, #fc8  {
+	background: #800080;
+}
+#fc10 {
+	background : #000000;	
+}
+#diagrams {
+    left: -273px;
+    position: absolute;
+    top: -45px;
+}
+#node_info {
+    left: -484px;
+    position: absolute;
+    top: -45px;
+}
+#div2 {
+    position: absolute;
+    left: 1141px;
+    top: 100px;
+}
+#logout {
+    left: 1268px;
+    position: absolute;
+    top: 22px;
+}
