@@ -116,3 +116,33 @@ input[type=text], input[type=password] {height: 35px;}
     background: -moz-linear-gradient(right, #841317, #ffff00); /* For Firefox 3.6 to 15 */
     background: linear-gradient(to right, #841317 , #ffff00); /* Standard syntax (must be last) */
 }
+#yellow-green {
+	background: -webkit-linear-gradient(left, #ffff00 , green); /* For Safari 5.1 to 6.0 */
+    background: -o-linear-gradient(right, #ffff00, green); /* For Opera 11.1 to 12.0 */
+    background: -moz-linear-gradient(right, #ffff00, green); /* For Firefox 3.6 to 15 */
+    background: linear-gradient(to right, #ffff00 , green); /* Standard syntax (must be last) */
+}
+#greens {
+	background: -webkit-linear-gradient(left, #ffffff, darkgreen); /* For Safari 5.1 to 6.0 */
+    background: -o-linear-gradient(right, #ffffff, darkgreen); /* For Opera 11.1 to 12.0 */
+    background: -moz-linear-gradient(right, #ffffff, darkgreen); /* For Firefox 3.6 to 15 */
+    background: linear-gradient(to right, #ffffff, darkgreen); /* Standard syntax (must be last) */
+}
+#reds {
+	background: -webkit-linear-gradient(left, #ffffff, darkred); /* For Safari 5.1 to 6.0 */
+    background: -o-linear-gradient(right, #ffffff, darkred); /* For Opera 11.1 to 12.0 */
+    background: -moz-linear-gradient(right, #ffffff, darkred); /* For Firefox 3.6 to 15 */
+    background: linear-gradient(to right, #ffffff, darkred); /* Standard syntax (must be last) */
+}
+#blues {
+	background: -webkit-linear-gradient(left, #ffffff, darkblue); /* For Safari 5.1 to 6.0 */
+    background: -o-linear-gradient(right, #ffffff, darkblue); /* For Opera 11.1 to 12.0 */
+    background: -moz-linear-gradient(right, #ffffff, darkblue); /* For Firefox 3.6 to 15 */
+    background: linear-gradient(to right, #ffffff, darkblue); /* Standard syntax (must be last) */
+}
+#greys{
+	background: -webkit-linear-gradient(left, #ffffff, darkgrey); /* For Safari 5.1 to 6.0 */
+    background: -o-linear-gradient(right, #ffffff, darkgrey); /* For Opera 11.1 to 12.0 */
+    background: -moz-linear-gradient(right, #ffffff, darkgrey); /* For Firefox 3.6 to 15 */
+    background: linear-gradient(to right, #ffffff, darkgrey); /* Standard syntax (must be last) */
+}

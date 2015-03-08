@@ -31,7 +31,7 @@ function updateImage(componentToUpdate, color) {
 function findCommunities(level) {
 	createWaitingBar($("#communities"));
     $.getJSON($SCRIPT_ROOT + '/_find_communities', {
-		level: level
+		level: $("#level").val()
 	}, function(data) {
 		removeProgressBar();
 		updateGraphImage(data.url);

@@ -50,12 +50,7 @@ function showCommunities(listOfCommunities, levels) {
         "detected with more components on them.'>Select level: </label>" +
         "<select id = 'level'></select><br><br><br>");
         selectLevelOfCommunities(levels);
-        $("#level").selectmenu({
-            change: function(event) {
-                event.preventDefault();
-                findCommunities(this.value);
-            }
-        });
+        $("#level").selectmenu();
     }
     for (var i = 0; i < listOfCommunities.length; i++) {
         var counter= i + 1;
