@@ -21,7 +21,6 @@ def calculate_average_shortest_path_length(graph, weight):
     is equal to 'weight' average shortest path length will be calculated
     taking graph's weight into account.
     :return Average shortest path length of graph.
-
     """
     average_path = []
     for g in nx.connected_component_subgraphs(graph.to_undirected()):
@@ -29,6 +28,8 @@ def calculate_average_shortest_path_length(graph, weight):
             average_path.append(nx.average_shortest_path_length(g, weight))
         except ZeroDivisionError:
             pass
+        except ValueError:
+            return None
     return sum(average_path) / len(average_path)
 
 
@@ -214,8 +215,13 @@ class Graphs:
         self.is_DAG = nx.is_directed_acyclic_graph(self.graph)
         self.number_of_nodes = self.graph.number_of_nodes()
         self.number_of_edges = self.graph.number_of_edges()
-        self.average_shortest_path_length.append(calculate_average_shortest_path_length(self.graph,
-                                                                                        None))
+        if self.growing:
+            self.average_shortest_path_length = []
+            self.average_shortest_path_length.append(calculate_average_shortest_path_length(self.graph,
+                                                                                            None))
+        else:
+            self.average_shortest_path_length.append(calculate_average_shortest_path_length(self.graph,
+                                                                                            None))
 
     def initialize_graph_characteristics_weighted(self):
         """
@@ -525,7 +531,7 @@ class Graphs:
             exists = False
         return exists
 
-    def calculate_degree_over_time(self, time):
+    def calculate_evolution_over_time(self, time):
         """
         Calculated average degree centrality and average shortest path length
         for different time, until the time given as parameter by user.

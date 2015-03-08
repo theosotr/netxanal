@@ -5,14 +5,13 @@ diagrams for distribution or dynamic analysis.
 For example, a diagram for reasons mentioned above can be a frequency
 diagram for closeness centrality of graph's nodes. On X-AXIS are closeness
 centrality values and on Y-AXIS are number of nodes.
-
 """
 __author__ = 'Thodoris Sotiropoulos'
 
 import json
 
 from mvc.controller import graphfile as current_graph
-from mvc.controller.depiction import Diagram
+from mvc.controller.visualization import Diagram
 from flask import request, Response, session
 from main import app
 
@@ -27,7 +26,6 @@ def create_diagram():
     degree centrality, clustering coefficient, etc.
 
     :return: Encoded string of diagram image and mean of values in JSON format.
-
     """
     graph = current_graph.graphfile[session['user']]
     diagram_type = request.args.get('diagram', None, type=str)
@@ -51,10 +49,9 @@ def dynamic_analysis():
     current time of graph and the future time specified by the parameter.
 
     :return: Encoded strings of diagram images in JSON format.
-
     """
     graph = current_graph.graphfile[session['user']]
     time = request.args.get('time', 1, type=int)
-    url = Diagram.degree_over_time(time, graph)
+    url = Diagram.graph_evolution_over_time(time, graph)
     json_obj = {'degree': url[0], 'pathInTime': url[1]}
     return Response(json.dumps(json_obj))

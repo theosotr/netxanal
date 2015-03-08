@@ -16,10 +16,7 @@ Apart from this, this module contains view functions associated with the import 
 a graph. A graph import can be done, by uploading a graph file to the system,
 generating a graph according to one of the available mathematical models of system or
 by importing an existing graph file which has been previously saved by user.
-
 """
-from mvc.model import user_model as user_admin
-
 __author__ = 'Thodoris Sotiropoulos'
 
 import json
@@ -28,7 +25,8 @@ from flask import session, request, render_template, redirect, url_for, Response
 from main import app
 from mvc.controller.graph import *
 from mvc.controller.analysis import *
-from mvc.controller.depiction import *
+from mvc.controller.visualization import *
+from mvc.model import user_model as user_admin
 import mvc.controller.graphfile as current_graph
 
 
@@ -48,7 +46,6 @@ def draw_graph():
     If graph is weighted row also includes edge weight
 
     :return: Main page of graph visualization.
-
     """
     if not session['login']:
         return redirect(url_for('index'))
@@ -193,7 +190,6 @@ def find_cliques():
     Detect cliques of graph. List of cliques is returned.
 
     :return: JSON object with the list of cliques.
-
     """
     graph = current_graph.graphfile[session['user']]
     cliques = Community(graph.graph.graph)
@@ -231,7 +227,7 @@ def rank_nodes():
                       size_measure=size_measure, cmap=colors)
     graph.image.ranking_nodes_image(ranking)
     if ranking_way == 'colorRanking' or ranking_way == 'bothRanking':
-        urls = [graph.image.url, graph.image.ranking.colorbase]
+        urls = [graph.image.url]
     else:
         urls = [graph.image.url]
     return Response(json.dumps(urls))
@@ -304,8 +300,6 @@ def dynamic_graph():
                            is_weighted=graph.graph.is_weighted,
                            url=graph.image.url,
                            negative_cycle=graph.graph.negative_cycle,
-                           average=graph.graph.average_shortest_path_length,
-                           number=graph.graph.number_of_shortest_paths,
                            negative_weights=graph.graph.has_negative_weights,
                            density=graph.graph.density,
                            is_DAG=graph.graph.is_DAG,
@@ -326,16 +320,15 @@ def add_node():
     Albert Barabasi model.
 
     :return: Main page of graph visualization.
-
     """
     returned_data = current_graph.graphfile[session['user']].graph.add_new_node_barabasi_model()
     current_graph.graphfile[session['user']].graph.graph = returned_data[0]
+    graph_obj = current_graph.graphfile[session['user']]
     new_edges = " ".join(str(x) for x in returned_data[1])
-    current_graph.graphfile[session['user']].graph.set_node_pos()
-    current_graph.graphfile[session['user']].graph.initialize_graph_characteristics()
+    graph_obj.graph.set_node_pos()
+    graph_obj.graph.initialize_graph_characteristics()
     image_style = ImageStyle()
-    current_graph.graphfile[session['user']].image = GraphImage(image_style,
-                                                                current_graph.graphfile[session['user']])
+    graph_obj.image = GraphImage(image_style, graph_obj)
     return redirect(url_for('dynamic_graph', edges=new_edges))
 
 
@@ -348,12 +341,12 @@ def delete_node():
     Albert Barabasi model.
 
     :return: Main page of graph visualization.
-
     """
-    current_graph.graphfile[session['user']].graph.graph = current_graph.graphfile[session['user']].graph.delete_node()
-    current_graph.graphfile[session['user']].graph.set_node_pos()
-    current_graph.graphfile[session['user']].graph.initialize_graph_characteristics()
+    graph_obj = current_graph.graphfile[session['user']]
+    current_graph.graphfile[session['user']].graph.graph = graph_obj.graph.delete_node()
+    graph_obj = current_graph.graphfile[session['user']]
+    graph_obj.graph.set_node_pos()
+    graph_obj.graph.initialize_graph_characteristics()
     image_style = ImageStyle()
-    current_graph.graphfile[session['user']].image = GraphImage(image_style,
-                                                                current_graph.graphfile[session['user']])
+    graph_obj.image = GraphImage(image_style, graph_obj)
     return redirect(url_for('graph'))

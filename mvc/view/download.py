@@ -5,9 +5,7 @@ requests for file downloading.
 For instance, these files can be, image of graph visualization in png format,
 edge information and node in information in CSV format, graph file in txt format,
 diagrams in png format.
-
 """
-
 __author__ = 'Thodoris Sotiropoulos'
 
 import csv
@@ -35,7 +33,6 @@ def download_node_info():
         (degree centrality, closeness centrality, etc.), pagerank if graph is
         directed, clustering coefficient if graph is undirected and then it
         creates a file in CSV format without saving it.
-
         """
         graph = current_graph.graphfile[session['user']]
         info = graph.graph.get_node_data()
@@ -79,7 +76,6 @@ def download_edge_info():
         Gets all edge information of the graph such as edge's source node,
         edge's target node, edge weight if graph is weighted, betweenness centrality
         and then it creates a file in CSV format without saving it.
-
         """
         graph = current_graph.graphfile[session['user']]
         info = graph.graph.get_edge_data()
@@ -163,7 +159,6 @@ def download_graph():
         -- Edge's target node following by whitespace
 
         If graph is weighted row also includes edge weight
-
         """
         graph = current_graph.graphfile[session['user']]
         info = graph.graph.get_graph_txtformat()

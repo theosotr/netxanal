@@ -25,9 +25,7 @@ class User:
     For example, to check if credentials given by user during login operation are
     right, it is needed to check database if a user matching these credentials
     exists.
-
     """
-
     def __init__(self, username='', password="", first_name='', last_name='',
                  email=''):
         """
@@ -38,7 +36,6 @@ class User:
         :param first_name: First name of user.
         :param last_name: Surname of user.
         :param email: email of user.
-
         """
         self.username = username
         self.password = password
