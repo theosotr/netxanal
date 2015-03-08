@@ -1,6 +1,7 @@
 $ cat .gitattributes
 templates/* linguist-documentation
-static/css/* linguist-documentation
+static/css/* linguist-vendored
+static/css/pagestyle.css linguist-vendored=false
 static/js/* linguist-vendored
 static/js/diagramHandler.js linguist-vendored=false
 static/js/editHTMLElements.js linguist-vendored=false
