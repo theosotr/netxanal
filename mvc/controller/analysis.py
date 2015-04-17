@@ -16,27 +16,57 @@ mat.use('AGG')
 import operator
 
 
-def girvan_newman_algorithm(graph):
+def _remove_max_edge(G, weight=None):
+    """
+    Removes edge with the highest value on betweenness centrality.
+
+    Repeat this step until more connected components than the connected
+    components of the original graph are detected.
+
+    It is part of Girvan-Newman algorithm.
+
+    :param G: NetworkX graph
+    :param weight: string, optional (default=None) Edge data key corresponding
+    to the edge weight.
+    """
+    number_components = nx.number_connected_components(G)
+    while nx.number_connected_components(G) <= number_components:
+        betweenness = nx.edge_betweenness_centrality(G, weight=weight)
+        max_value = max(betweenness.values())
+        for edge in G.edges():
+            if betweenness[edge] == max_value:
+                G.remove_edge(*edge)
+
+
+def _communities(G):
+    """
+    Stores nodes of every connected component of graph in a tuple.
+
+    It is part of Girvan-Newman algorithm.
+
+    :param G: NetworkX graph
+    :return: Tuple which contains the list of nodes of every connected component
+    detected in graph.
+    """
+    communities_comp = ()
+    for subgraph in nx.connected_component_subgraphs(G):
+        communities_comp += (subgraph.nodes(),)
+    return communities_comp
+
+
+def girvan_newman_algorithm(graph, weight='weight'):
     """
     Implementation of Girvan - Newman algorithm for community detection.
 
     :param graph Graph object to check for communities.
     :return List of communities which are detected.
     """
-    communities = []
-    while len(graph.edges()) != 0:
-        edge_betweenness = nx.edge_betweenness_centrality(graph,
-                                                          normalized=False,
-                                                          weight=None)
-        values = list(edge_betweenness.values())
-        max_value = max(values)
-        for edge in graph.edges():
-            if edge_betweenness[edge] == max_value:
-                graph.remove_edge(edge[0], edge[1])
-        component = nx.connected_component_subgraphs(graph)
-        if len(component) > 1:
-            communities.append(component)
-    return communities
+    g = graph.copy().to_undirected()
+    components = []
+    while g.number_of_edges() > 0:
+        _remove_max_edge(g, weight)
+        components.append(_communities(g),)
+    return components
 
 
 class Community:
